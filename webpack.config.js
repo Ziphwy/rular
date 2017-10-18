@@ -23,7 +23,7 @@ module.exports = {
         exclude: [path.resolve(__dirname, 'node_modules')],
       },
       {
-        test: /\.(jpe?g|png)/,
+        test: /\.(jpe?g|png|ttf)/,
         loader: 'file-loader',
         options: {
           name: 'assets/[name].[hash:5].[ext]',
@@ -37,7 +37,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/app/index.html',
+      template: path.resolve(__dirname, './src/app/index.html'),
       filename: 'app.html',
     }),
   ],

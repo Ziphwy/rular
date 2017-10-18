@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import './base.css';
 import app from './app.vue';
 
 new Vue({

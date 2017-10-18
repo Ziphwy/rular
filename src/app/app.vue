@@ -2,17 +2,19 @@
   <div class="app full-screen">
     <div class="title">欢迎使用</div>
     <div class="content">
-      <div class="flex flex-column flex-center background">
-        <div class="app-name">Rular</div>
-        <div class="app-author">Author By Zfhuang</div>
-      </div>
+      <editor></editor>
     </div>
   </div>
 </template>
 
 <script>
+import editor from './components/editor.vue';
+
 export default {
   name: 'app',
+  components: {
+    editor,
+  },
 };
 </script>
 
@@ -38,22 +40,5 @@ export default {
   height: calc(100% - 24px);
   min-height: calc(100% - 24px);
   -webkit-app-region: no-drag;
-}
-.background {
-  width: 100%;
-  height: 100%;
-}
-.app-name {
-  font-family: fantasy;
-  -webkit-text-fill-color: rgba(0, 0, 0, 0.3);
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
-  font-size: 100px;
-}
-
-.app-author {
-  font-family: fantasy;
-  -webkit-text-fill-color: rgba(0, 0, 0, 0.3);
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
-  font-size: 40px;
 }
 </style>

@@ -41,6 +41,7 @@ module.exports = {
       filename: 'app.html',
     }),
   ],
+  devtool: 'eval',
   devServer: {
     port: 8000,
   },

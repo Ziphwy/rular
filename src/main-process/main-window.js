@@ -1,25 +1,39 @@
-const { BrowserWindow, screen } = require('electron');
+/** eslint global-require:0 */
 const path = require('path');
+const electron = require('electron');
+const processWindow = require('./process-window');
 
-let mainWindow = new BrowserWindow({
-  title: 'Rular',
-  width: screen.getPrimaryDisplay().workAreaSize.width,
-  height: screen.getPrimaryDisplay().workAreaSize.height,
-  show: false,
-  titleBarStyle: 'hidden',
-});
+let mainWindow;
 
-// install vue dev-tool chrome-plugin
-BrowserWindow.addDevToolsExtension(path.resolve(__dirname, '../../vue-devtools/3.1.6_0/'));
-// open chrome devtools
-mainWindow.webContents.openDevTools();
+function getMainWindow() {
+  if (mainWindow) {
+    return mainWindow;
+  }
+  const { BrowserWindow, screen } = electron;
+  mainWindow = new BrowserWindow({
+    title: 'Rular',
+    width: screen.getPrimaryDisplay().workAreaSize.width,
+    height: screen.getPrimaryDisplay().workAreaSize.height,
+    show: false,
+    titleBarStyle: 'hidden',
+  });
 
-mainWindow.once('ready-to-show', () => {
-  mainWindow.show();
-});
+  // install vue dev-tool chrome-plugin
+  BrowserWindow.addDevToolsExtension(path.resolve(__dirname, '../../vue-devtools/3.1.6_0/'));
+  // open chrome devtools
+  mainWindow.webContents.openDevTools();
 
-mainWindow.on('closed', () => {
-  mainWindow = null;
-});
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
-module.exports = mainWindow;
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+    processWindow().destroy(); // 关闭后台窗口
+  });
+
+  return mainWindow;
+}
+
+
+module.exports = getMainWindow;

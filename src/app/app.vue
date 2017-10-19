@@ -37,8 +37,8 @@ export default {
   font-size: 12px;
 }
 .content {
-  height: calc(100% - 24px);
-  min-height: calc(100% - 24px);
+  height: calc(100% - 30px);
+  min-height: calc(100% - 30px);
   -webkit-app-region: no-drag;
 }
 </style>

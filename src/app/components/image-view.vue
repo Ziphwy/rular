@@ -1,5 +1,10 @@
 <template>
-  <div class="image-view" :style="styles"></div>
+  <div class="image-view" :style="styles">
+    <div class="canvas"></div>
+    <div class="panel">
+
+    </div>
+  </div>
 </template>
 
 <script>
@@ -18,11 +23,13 @@
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const { width, height, imageElement } = this.image;
-      canvas.className = 'canvas';
       canvas.height = height;
       canvas.width = width;
       ctx.drawImage(imageElement, 0, 0, width, height);
-      this.$el.appendChild(canvas);
+      this.$el.getElementsByClassName('canvas')[0].appendChild(canvas);
+    },
+    methods: {
+
     },
   };
 </script>

@@ -6,11 +6,20 @@ module.exports = {
   context: __dirname,
   entry: {
     app: './src/app/index.js',
+    process: './src/background-process/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'assets/[name].[chunkhash:5].js',
   },
+  // externals: [
+  //   function deal(context, request, callback) {
+  //     if (/electron/.test(request)) {
+  //       return callback(null, `require('${request}')`);
+  //     }
+  //     return callback();
+  //   },
+  // ],
   module: {
     rules: [
       {
@@ -38,7 +47,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/app/index.html'),
+      chunks: ['app'],
       filename: 'app.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/background-process/index.html'),
+      chunks: ['process'],
+      filename: 'process.html',
     }),
   ],
   devtool: 'eval',

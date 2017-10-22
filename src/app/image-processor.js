@@ -1,18 +1,31 @@
 import { ipcRenderer } from 'electron';
 
-export function process(pid, path, method, args) {
+const resolveFunc = {};
+
+ipcRenderer.on('main', (sender, resp) => {
+  const { pid, path, method, args, result } = resp;
+  if (resolveFunc[pid]) {
+    resolveFunc[pid]({ path, method, args, result });
+    delete resolveFunc[pid];
+  }
+});
+// window.test = process;
+export function process(path, method, args) {
   return new Promise((resolve, reject) => {
+    const pid = Math.random().toString();
     try {
+      // console.log({
+      //   pid,
+      //   path,
+      //   method,
+      //   args,
+      // });
+      resolveFunc[pid] = resolve;
       ipcRenderer.send('main', {
-        path,
         pid,
+        path,
         method,
         args,
-      });
-      ipcRenderer.on('main', (sender, resp = {}) => {
-        if (resp.pid === pid) {
-          resolve(resp);
-        }
       });
     } catch (err) {
       reject(err);

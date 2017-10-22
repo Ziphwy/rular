@@ -1,3 +1,4 @@
+/* eslint-env node */
 const { app, ipcMain } = require('electron');
 const getMainWindow = require('./main-process/main-window.js');
 const getProcessWindow = require('./main-process/process-window.js');
@@ -12,17 +13,15 @@ app.on('ready', () => {
 
   ipcMain.on('main', (event, payload) => {
     const { pid, path, method, args } = payload;
-    console.log(payload);
     processWindow.webContents.send('processor', {
       pid, path, method, args,
     });
   });
 
   ipcMain.on('processor', (event, payload) => {
-    const { pid, path, method, args } = payload;
-    console.log(payload);
+    const { pid, path, method, args, result } = payload;
     mainWindow.webContents.send('main', {
-      pid, path, method, args,
+      pid, path, method, args, result,
     });
   });
 });

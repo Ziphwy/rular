@@ -1,6 +1,6 @@
 <template>
   <div class="app full-screen">
-    <div class="title">欢迎使用</div>
+    <div class="title" @dragover.prevent @drop.prevent>欢迎使用</div>
     <div class="content">
       <editor></editor>
     </div>

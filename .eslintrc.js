@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     'object-curly-newline': 0,
     'no-underscore-dangle': 0,
+    'no-plusplus': 0,
   },
   settings: {
     "import/resolver": {

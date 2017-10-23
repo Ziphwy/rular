@@ -133,7 +133,7 @@ class PixesData {
       if (direct === 'x') {
         while (pn > $mAxis && !this._isSimilarRange('y', pn, $cAxis, range, tolerance)) pn--;
       } else {
-        while (p0 > $mAxis && !this._isSimilarRange('x', $cAxis, p0, range, tolerance)) pn--;
+        while (pn > $mAxis && !this._isSimilarRange('x', $cAxis, pn, range, tolerance)) pn--;
       }
     }
 

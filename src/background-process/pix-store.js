@@ -114,11 +114,11 @@ class PixesData {
     p0 += 1;
 
     if (range > 0 && p0 < $mAxis) {
-      // 1.2 find the pix accord to the srange between x0 and mAxis-1
+      // 1.2 find the pix accord to the srange between p0 + 1 and mAxis-1
       if (direct === 'x') {
-        while (p0 > -1 && !this._isSimilarRange('y', p0, $cAxis, range, tolerance)) p0++;
+        while (p0 < $mAxis && !this._isSimilarRange('y', p0, $cAxis, range, tolerance)) p0++;
       } else {
-        while (p0 > -1 && !this._isSimilarRange('x', $cAxis, p0, range, tolerance)) p0++;
+        while (p0 < $mAxis && !this._isSimilarRange('x', $cAxis, p0, range, tolerance)) p0++;
       }
     }
 

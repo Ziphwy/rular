@@ -9,13 +9,8 @@
 
 <script>
 export default {
-  name: 'rect-marker',
+  name: 'size-marker',
   props: ['x', 'y', 'width', 'height'],
-  data() {
-    return {
-      mode: 'hex',
-    };
-  },
   computed: {
     posStyles() {
       return {

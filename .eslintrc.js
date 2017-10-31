@@ -13,6 +13,8 @@ module.exports = {
     'object-curly-newline': 0,
     'no-underscore-dangle': 0,
     'no-plusplus': 0,
+    'no-param-reassign': ['error', { props: false }],
+    'no-unused-expressions': [ "error", { allowShortCircuit: true } ],
   },
   settings: {
     "import/resolver": {

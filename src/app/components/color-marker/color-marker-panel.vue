@@ -6,7 +6,7 @@
 
 <script>
 import colorMarker from './color-marker.vue';
-import { process } from '../../image-processor';
+import { process } from '../../services/processor';
 
 export default {
   name: 'color-marker-panel',

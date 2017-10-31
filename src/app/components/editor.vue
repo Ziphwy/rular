@@ -1,26 +1,23 @@
 <template>
   <div class="editor" @dragover.prevent @drop.prevent="openFile">
-    <div class="flex flex-column flex-center background" v-show="images.length < 1">
+    <div class="flex flex-column flex-center background" v-show="fileList.length < 1">
       <div class="app-name">Rular</div>
-      <div class="app-author">Author By Zfhuang</div>
+      <div class="app-author">Author By Ziphwy</div>
     </div>
-    <image-view v-for="img in images" :key="img.path" :image="img" v-show="current === img.path"></image-view>
+    <keep-alive>
+      <image-view v-for="file in fileList" :key="file.path" :image="file" v-if="currentFile.path === file.path"></image-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import imageView from './image-view.vue';
-import { loadImage } from '../../commons/image';
-import { process } from '../image-processor';
 
 export default {
   name: 'editor',
-  data() {
-    return {
-      images: [],
-      imgIndex: {},
-      current: '',
-    };
+  computed: {
+    ...mapState(['currentFile', 'fileList']),
   },
   components: {
     imageView,
@@ -29,25 +26,11 @@ export default {
     openFile($event) {
       const { files } = $event.dataTransfer;
       Object.keys(files).forEach((i) => {
-        const { name, path, size } = files[i];
+        const { name, path } = files[i];
         if (!/\.(?:png|jpe?g|bmp$)/.test(name)) {
           return alert(`${path} is not an image.`);
         }
-        if (!this.imgIndex[path]) {
-          loadImage(files[i]).then((imageElement) => {
-            process(path, 'loadImage');
-            this.images.push({
-              name,
-              path,
-              size,
-              imageElement,
-              width: imageElement.naturalWidth,
-              height: imageElement.naturalHeight,
-            });
-            this.imgIndex[path] = this.images.length - 1;
-          });
-        }
-        this.current = path;
+        return this.$store.dispatch('addFile', files[i]);
       });
     },
   },

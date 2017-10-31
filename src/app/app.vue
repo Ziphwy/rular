@@ -25,7 +25,7 @@ export default {
 }
 .app {
   font-family: monaco;
-  background: rgba(15, 15, 15, 0.925);
+  background: rgba(25, 25, 25, 0.925);
 }
 .title {
   height: 30px;

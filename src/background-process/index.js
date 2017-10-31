@@ -1,12 +1,12 @@
 import { ipcRenderer } from 'electron';
-import { getImage, imageToCanvas } from '../commons/image';
+import { getImageByPath, imageToCanvas } from '../commons/image';
 import PixStore from './pix-store';
 
 const pixStore = new PixStore();
 
 const processor = {
   loadImage(path) {
-    getImage(path).then((imgElement) => {
+    getImageByPath(path).then((imgElement) => {
       const { naturalWidth, naturalHeight } = imgElement;
       const imageData = imageToCanvas(imgElement).context.getImageData(0, 0, naturalWidth, naturalHeight);
       pixStore.addPixesData(path, imageData);

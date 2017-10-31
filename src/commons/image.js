@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-export function loadImage(imgBlob) {
+export function blobToImage(imgBlob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(imgBlob);
@@ -17,13 +17,13 @@ export function loadImage(imgBlob) {
   });
 }
 
-export function getImage(path) {
+export function getImageByPath(path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, (err, data) => {
       if (err) {
         reject(err);
       }
-      loadImage(new Blob([data])).then(resolve);
+      blobToImage(new Blob([data])).then(resolve);
     });
   });
 }
@@ -39,4 +39,35 @@ export function imageToCanvas(imgElement) {
     canvas,
     context,
   };
+}
+
+
+export function transformLength({ num, width, base, dpr, unit, rfs }) {
+  let viewSize = num;
+  if (base > 0) {
+    viewSize = num * (base / width);
+  }
+  if (unit === 'rem') {
+    return `${parseFloat((viewSize / rfs).toFixed(6))}rem`;
+  }
+  if (unit === 'dp') {
+    return `${parseFloat((viewSize / dpr).toFixed(6))}dp`;
+  }
+  return `${parseFloat(viewSize.toFixed(2))}px`;
+}
+
+
+export function transformColor({ color, mode }) {
+  if (mode === 'hex') {
+    if (color[3] === 255) {
+      return `#${color.slice(0, 3).map(c => c.toString(16)).join('')}`;
+    }
+    return `#${color.map(c => c.toString(16)).join('')}`;
+  }
+
+  if (color[3] === 255) {
+    return `rgb(${color.slice(0, 3).join(',')})`;
+  }
+  color[3] = parseFloat((color[3] / 255).toFixed(6));
+  return `rgba(${color.join(',')})`;
 }

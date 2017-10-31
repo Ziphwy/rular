@@ -9,17 +9,11 @@ ipcRenderer.on('main', (sender, resp) => {
     delete resolveFunc[pid];
   }
 });
-// window.test = process;
+
 export function process(path, method, args) {
   return new Promise((resolve, reject) => {
     const pid = Math.random().toString();
     try {
-      // console.log({
-      //   pid,
-      //   path,
-      //   method,
-      //   args,
-      // });
       resolveFunc[pid] = resolve;
       ipcRenderer.send('main', {
         pid,

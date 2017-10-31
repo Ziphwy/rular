@@ -8,11 +8,6 @@
 export default {
   name: 'color-marker',
   props: ['color', 'x', 'y'],
-  data() {
-    return {
-      mode: 'hex',
-    };
-  },
   computed: {
     styles() {
       return {
@@ -21,7 +16,7 @@ export default {
       };
     },
     transformColor() {
-      return `rgba(${this.color.join(',')})`;
+      return this.$store.getters.transformColor(this.color);
     },
   },
 };

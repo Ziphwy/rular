@@ -1,7 +1,7 @@
 <template>
   <div class="sign" :style="posStyles">
     <div class="line" :style="styles" :class="{ vertical: this.direct === 'y'}">
-      <span>{{ transformLength }}</span>
+      <span>{{ displayLength }}</span>
       <div class="range" :style="rangeStyles"></div>
     </div>
   </div>
@@ -11,11 +11,6 @@
 export default {
   name: 'distance-marker',
   props: ['direct', 'x', 'y', 'length', 'range'],
-  data() {
-    return {
-      mode: 'hex',
-    };
-  },
   computed: {
     posStyles() {
       return {
@@ -34,9 +29,8 @@ export default {
         width: `${this.length}px`,
       };
     },
-    transformLength() {
-      const unit = 'px';
-      return `${this.length}${unit}`;
+    displayLength() {
+      return this.$store.getters.transformLength(this.length);
     },
   },
 };

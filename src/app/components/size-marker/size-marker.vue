@@ -25,12 +25,10 @@ export default {
       };
     },
     transformWidth() {
-      const unit = 'px';
-      return `${this.width}${unit}`;
+      return this.$store.getters.transformLength(this.width);
     },
     transformHeight() {
-      const unit = 'px';
-      return `${this.height}${unit}`;
+      return this.$store.getters.transformLength(this.height);
     },
   },
 };

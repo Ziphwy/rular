@@ -1,5 +1,5 @@
 <template>
-  <div class="flex image-tab">
+  <div class="flex flex-center image-tab">
     <div class="thumbnail" v-for="(file, index) in fileList" :key="index" @click="selectFile(file.path)">
       <canvas class="canvas" v-draw="file.imgElement" :width="file.width" :height="file.height"></canvas>
       <div class="text">{{ file.name }}</div>
@@ -47,16 +47,14 @@ export default {
 }
 .thumbnail {
   padding: 10px;
-  width: 247px;
-  height: 400px;
   border-radius: 4px;
 }
 .thumbnail:hover {
   background-color: rgba(191, 191, 191, 0.5);
 }
 .thumbnail .canvas {
-  width: 100%;
-  height: 100%;
+    width: 247px;
+    height: 400px;
 }
 .thumbnail .text {
   text-align: center;

@@ -6,6 +6,7 @@
 
 <script>
 import colorMarker from './color-marker.vue';
+import { throttle } from '../../../commons/utils';
 import { process } from '../../services/processor';
 
 export default {
@@ -22,14 +23,14 @@ export default {
     colorMarker,
   },
   methods: {
-    moveHandle($event) {
+    moveHandle: throttle(function moveHandle($event) {
       process(this.image.path, 'getColor', { x: $event.offsetX, y: $event.offsetY })
         .then(({ result }) => {
           this.x = $event.offsetX;
           this.y = $event.offsetY;
           this.color = result;
         });
-    },
+    }, 50, 50),
     clickHandle($event) {
 
     },

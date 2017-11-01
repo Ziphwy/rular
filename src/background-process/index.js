@@ -6,11 +6,12 @@ const pixStore = new PixStore();
 
 const processor = {
   loadImage(path) {
+    const start = Date.now();
     getImageByPath(path).then((imgElement) => {
       const { naturalWidth, naturalHeight } = imgElement;
       const imageData = imageToCanvas(imgElement).context.getImageData(0, 0, naturalWidth, naturalHeight);
       pixStore.addPixesData(path, imageData);
-      console.log(path, pixStore);
+      console.log(`${path} :${Date.now() - start}`);
     });
   },
   getColor(path, { x, y }) {

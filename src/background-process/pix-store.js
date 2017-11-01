@@ -16,6 +16,7 @@ class PixesData {
   constructor({ path, pixes }) {
     this.path = path;
     this.pixes = pixes;
+    this.raw = this.pixes.width << 2;
   }
 
 
@@ -58,16 +59,18 @@ class PixesData {
 
   getPix(direct, x, y) {
     if (direct === 'y') {
-      return this.pixes[x][y];
+      const base = (this.raw * x) + (y << 2);
+      return [this.pixes.data[base], this.pixes.data[base + 1], this.pixes.data[base + 2], this.pixes.data[base + 3]];
     }
-    return this.pixes[y][x];
+    const base = (this.raw * y) + (x << 2);
+    return [this.pixes.data[base], this.pixes.data[base + 1], this.pixes.data[base + 2], this.pixes.data[base + 3]];
   }
 
   _getLen(direct) {
     if (direct === 'y') {
-      return this.pixes.length;
+      return this.pixes.height;
     }
-    return this.pixes[0].length;
+    return this.pixes.width;
   }
 
   _isSimilarRange(direct, mAxis, cAxis, delta, tolerance = 0) {
@@ -175,24 +178,10 @@ export default class PixesDatabase {
   constructor() {
     this.database = {};
   }
-  static parsePixes(imageData) {
-    const pixes = [];
-    const { data, width } = imageData;
-    const len = data.length;
-    let raw = [];
-    for (let i = 0; i < len; i += 4) {
-      raw.push([data[i], data[i + 1], data[i + 2], data[i + 3]]);
-      if (raw.length === width) {
-        pixes.push(raw);
-        raw = [];
-      }
-    }
-    return pixes;
-  }
   addPixesData(path, imageData) {
     this.database[path] = new PixesData({
       path,
-      pixes: PixesDatabase.parsePixes(imageData),
+      pixes: imageData,
     });
   }
   /**

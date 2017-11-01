@@ -46,6 +46,35 @@ export default {
 };
 </script>
 
+<style>
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/*滑槽*/
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/*滑块*/
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.3);
+}
+::-webkit-resizer {
+  display: none;
+}
+</style>
+
 <style scoped>
 .background {
   width: 100%;
@@ -90,32 +119,6 @@ export default {
   background-image: url("../assets/close.png");
 }
 
-.editor::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-
-/*滑槽*/
-
-.editor::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-/*滑块*/
-
-.editor::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.3);
-}
-.editor::-webkit-scrollbar-button {
-  display: none;
-}
-.editor::-webkit-scrollbar-corner {
-  background: rgba(0, 0, 0, 0.3);
-}
-.editor::-webkit-resizer {
-  display: none;
-}
 .views {
   /* position: absolute;
   top: 0;

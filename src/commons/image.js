@@ -29,12 +29,14 @@ export function getImageByPath(path) {
 }
 
 
-export function imageToCanvas(imgElement) {
+export function imageToCanvas(imgElement, opt = {}) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
-  canvas.height = imgElement.naturalHeight;
-  canvas.width = imgElement.naturalWidth;
-  context.drawImage(imgElement, 0, 0, imgElement.naturalWidth, imgElement.naturalHeight);
+  const { width = imgElement.naturalWidth, height = imgElement.naturalHeight } = opt;
+  const rate = imgElement.naturalHeight / imgElement.naturalWidth;
+  canvas.width = width;
+  canvas.height = height;
+  context.drawImage(imgElement, 0, 0, width, width * rate);
   return {
     canvas,
     context,

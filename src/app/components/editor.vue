@@ -1,5 +1,6 @@
 <template>
   <div class="editor" @dragover.prevent @drop.prevent="openFile">
+    <div class="icon button tab-btn" :class="[showTab ? 'close-tab' : 'open-tab' ]" @click="showTab = !showTab"></div>
     <div class="flex flex-column flex-center background" v-show="fileList.length < 1">
       <div class="app-name">Rular</div>
       <div class="app-author">Author By Ziphwy</div>
@@ -7,20 +8,28 @@
     <keep-alive>
       <image-view v-for="file in fileList" :key="file.path" :image="file" v-if="currentFile.path === file.path"></image-view>
     </keep-alive>
+    <image-tab v-show="showTab" @close="showTab = false"></image-tab>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import imageView from './image-view.vue';
+import imageTab from './image-tab.vue';
 
 export default {
   name: 'editor',
+  data() {
+    return {
+      showTab: false,
+    };
+  },
   computed: {
     ...mapState(['currentFile', 'fileList']),
   },
   components: {
     imageView,
+    imageTab,
   },
   methods: {
     openFile($event) {
@@ -63,6 +72,24 @@ export default {
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.5) inset;
   position: relative;
 }
+
+.tab-btn {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  margin: 6px;
+}
+
+.open-tab {
+  background-image: url("../assets/tab-btn.png");
+}
+
+.close-tab {
+  background-image: url("../assets/close.png");
+}
+
 .editor::-webkit-scrollbar {
   width: 5px;
   height: 5px;

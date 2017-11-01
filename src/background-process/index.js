@@ -10,6 +10,7 @@ const processor = {
       const { naturalWidth, naturalHeight } = imgElement;
       const imageData = imageToCanvas(imgElement).context.getImageData(0, 0, naturalWidth, naturalHeight);
       pixStore.addPixesData(path, imageData);
+      console.log(path, pixStore);
     });
   },
   getColor(path, { x, y }) {
@@ -26,21 +27,23 @@ const processor = {
 ipcRenderer.on('processor', (event, payload) => {
   const { pid, path, method, args } = payload;
   // console.log(path, method, args);
-  if (!processor[method]) {
+  let result;
+  try {
+    result = processor[method](path, args);
+    event.sender.send('processor', {
+      pid,
+      code: '0000',
+      resp: 'success',
+      path,
+      method,
+      args,
+      result,
+    });
+  } catch (e) {
     event.sender.send({
       code: '9999',
       resp: 'fail',
     });
   }
-  const result = processor[method](path, args);
-  event.sender.send('processor', {
-    pid,
-    code: '0000',
-    resp: 'success',
-    path,
-    method,
-    args,
-    result,
-  });
 });
 

@@ -3,9 +3,11 @@ import { ipcRenderer } from 'electron';
 const resolveFunc = {};
 
 ipcRenderer.on('main', (sender, resp) => {
-  const { pid, path, method, args, result } = resp;
+  const { code, pid, path, method, args, result } = resp;
   if (resolveFunc[pid]) {
-    resolveFunc[pid]({ path, method, args, result });
+    if (code === '0000') {
+      resolveFunc[pid]({ path, method, args, result });
+    }
     delete resolveFunc[pid];
   }
 });

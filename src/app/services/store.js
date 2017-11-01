@@ -15,6 +15,7 @@ const state = {
   currentFile: {},
   fileIndex: {},
   fileList: [],
+  scale: 1,
   optionList: initOption(),
   currentTool: 'distance',
 };
@@ -37,6 +38,9 @@ const mutations = {
   },
   SET_OPTION(state, { type, option }) {
     state.optionList[type] = Object.assign(state.optionList[type], option);
+  },
+  SET_SCALE(state, value) {
+    state.scale = value;
   },
 };
 
@@ -66,6 +70,10 @@ const getters = {
   },
   transformColor({ optionList: { base } }) {
     return color => transformColor({ color, ...base });
+  },
+  scaleFontSize({ scale }) {
+    if (scale > 1) return 12;
+    return Math.max(Math.min(Math.floor(12 / scale), 30), 1);
   },
 };
 

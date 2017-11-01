@@ -21,6 +21,7 @@ export default {
       return {
         width: `${this.width}px`,
         height: `${this.height}px`,
+        fontSize: `${this.$store.getters.scaleFontSize}px`,
       };
     },
     transformWidth() {

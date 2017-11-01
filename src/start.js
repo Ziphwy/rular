@@ -19,9 +19,9 @@ app.on('ready', () => {
   });
 
   ipcMain.on('processor', (event, payload) => {
-    const { pid, path, method, args, result } = payload;
+    const { code, pid, path, method, args, result } = payload;
     mainWindow.webContents.send('main', {
-      pid, path, method, args, result,
+      code, pid, path, method, args, result,
     });
   });
 });

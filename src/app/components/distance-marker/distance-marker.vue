@@ -1,7 +1,7 @@
 <template>
   <div class="sign" :style="posStyles">
     <div class="line" :style="styles" :class="{ vertical: this.direct === 'y'}">
-      <span>{{ displayLength }}</span>
+      <div class="text" :style="textScale">{{ displayLength }}</div>
       <div class="range" :style="rangeStyles"></div>
     </div>
   </div>
@@ -20,6 +20,11 @@ export default {
     styles() {
       return {
         width: `${this.length}px`,
+      };
+    },
+    textScale() {
+      return {
+        fontSize: `${this.$store.getters.scaleFontSize}px`,
       };
     },
     rangeStyles() {
@@ -50,14 +55,24 @@ export default {
   color: red;
 }
 .line .range {
-    position: absolute;
-    left: 0;
-    border-left: 1px solid red;
-    border-right: 1px solid red;
+  position: absolute;
+  left: 0;
+  border-left: 1px solid red;
+  border-right: 1px solid red;
+}
+
+.line .text {
+  display: inline-block;
+  padding: 4px;
 }
 
 .vertical {
   transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+
+.vertical .text {
+  transform: rotate(-90deg);
   transform-origin: 0 0;
 }
 </style>

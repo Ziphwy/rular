@@ -35,7 +35,6 @@ export default {
   props: ['image'],
   data() {
     return {
-      scale: 1,
       pressTimer: null,
     };
   },
@@ -51,7 +50,7 @@ export default {
         height: `${(this.image.height * this.scale) + 100}px`,
       };
     },
-    ...mapState(['currentTool', 'optionList']),
+    ...mapState(['currentTool', 'optionList', 'scale']),
   },
   components: {
     colorMarkerPanel,
@@ -77,7 +76,7 @@ export default {
     },
     scaleView(sign) {
       const nScale = this.scale + (0.05 * sign);
-      this.scale = Math.min(50, Math.max(0, nScale));
+      this.$store.commit('SET_SCALE', Math.min(50, Math.max(0, nScale)));
     },
     startScale(sign) {
       this.scaleView(sign);

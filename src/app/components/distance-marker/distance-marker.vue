@@ -8,10 +8,13 @@
 </template>
 
 <script>
+import { divideProp } from '../../../commons/utils';
+
 export default {
   name: 'distance-marker',
-  props: ['direct', 'x', 'y', 'length', 'range'],
+  props: ['attr'],
   computed: {
+    ...divideProp('attr', ['direct', 'x', 'y', 'length', 'range']),
     posStyles() {
       return {
         transform: `translate(${this.x}px,${this.y}px)`,

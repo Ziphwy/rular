@@ -8,10 +8,13 @@
 </template>
 
 <script>
+import { divideProp } from '../../../commons/utils';
+
 export default {
   name: 'size-marker',
-  props: ['x', 'y', 'width', 'height'],
+  props: ['attr'],
   computed: {
+    ...divideProp('attr', ['x', 'y', 'width', 'height']),
     posStyles() {
       return {
         transform: `translate(${this.x}px,${this.y}px)`,

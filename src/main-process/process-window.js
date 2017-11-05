@@ -1,5 +1,4 @@
 /** eslint global-require:0 */
-const path = require('path');
 const electron = require('electron');
 
 let processWindow;
@@ -10,12 +9,14 @@ function getProcessWindow() {
   }
   const { BrowserWindow } = electron;
   processWindow = new BrowserWindow({
-    title: 'rular-process',
+    title: 'rular-processor',
     show: false,
   });
 
   processWindow.once('ready-to-show', () => {
-    processWindow.show();
+    if (process.env.NODE_ENV === 'development') {
+      processWindow.show();
+    }
   });
 
   processWindow.on('closed', () => {

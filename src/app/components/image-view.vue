@@ -2,6 +2,7 @@
   <div class="flex flex-center view" :style="viewStyles">
     <div class="image-view" :style="styles">
       <div class="canvas"></div>
+      <sign-panel :image="image"></sign-panel>
       <color-marker-panel :image="image" v-show="currentTool === 'color'"></color-marker-panel>
       <distance-marker-panel :image="image" v-show="currentTool === 'distance'"></distance-marker-panel>
       <size-marker-panel :image="image" v-show="currentTool === 'size'"></size-marker-panel>
@@ -24,10 +25,12 @@
 <script>
 import { mapState } from 'vuex';
 import { imageToCanvas } from '../../commons/image';
+import { limit } from '../../commons/utils';
 import optionBar from './option-bar.vue';
 import colorMarkerPanel from './color-marker/color-marker-panel.vue';
 import distanceMarkerPanel from './distance-marker/distance-marker-panel.vue';
 import sizeMarkerPanel from './size-marker/size-marker-panel.vue';
+import signPanel from './sign-panel.vue';
 import { initOptionConfig, getOptionTypes } from '../services/option-manager';
 
 export default {
@@ -57,6 +60,7 @@ export default {
     distanceMarkerPanel,
     sizeMarkerPanel,
     optionBar,
+    signPanel,
   },
   mounted() {
     const { canvas } = imageToCanvas(this.image.imgElement);
@@ -74,23 +78,8 @@ export default {
       if (type === 'base') return;
       this.$store.commit('SWITCH_TOOL', type);
     },
-    scaleView(sign) {
-      const nScale = this.scale + (0.05 * sign);
-      this.$store.commit('SET_SCALE', Math.min(50, Math.max(0, nScale)));
-    },
     startScale(sign) {
-      this.scaleView(sign);
-
-      this.stopScale();
-      this.scaleTimer = setInterval(() => {
-        this.scaleView(sign);
-      }, 200);
-
-      document.addEventListener('mouseup', this.stopScale);
-    },
-    stopScale() {
-      document.removeEventListener('mouseup', this.stopScale);
-      clearTimeout(this.scaleTimer);
+      this.$store.commit('SET_SCALE', limit(this.scale + (0.125 * sign), 0, 2));
     },
   },
 };

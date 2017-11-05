@@ -8,6 +8,7 @@ module.exports = {
   env: {
     "browser": true,
     "es6": true,
+    "node": true,
   },
   rules: {
     'object-curly-newline': 0,
@@ -15,12 +16,6 @@ module.exports = {
     'no-plusplus': 0,
     'no-param-reassign': ['error', { props: false }],
     'no-unused-expressions': [ "error", { allowShortCircuit: true } ],
-  },
-  settings: {
-    "import/resolver": {
-      webpack: {
-        config: './webpack.config.js'
-      }
-    }
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/electron/**/*"]}]
   }
 };

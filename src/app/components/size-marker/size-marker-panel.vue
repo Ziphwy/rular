@@ -1,7 +1,7 @@
 <template>
   <div class="full-screen" @mousedown="startHandle">
     <!-- 光标 -->
-    <size-marker :width="width" :height="height" :x="x" :y="y" style="pointer-events: none;"></size-marker>
+    <size-marker :attr="attr" style="pointer-events: none;"></size-marker>
   </div>
 </template>
 
@@ -21,6 +21,14 @@ export default {
     };
   },
   computed: {
+    attr() {
+      return {
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height,
+      };
+    },
     tolerance() {
       return this.$store.state.optionList.size.tolerance;
     },
@@ -49,11 +57,24 @@ export default {
         y: this.y,
         width: this.width,
         height: this.height,
+        tolerance: this.tolerance,
       }).then(({ result }) => {
         this.x = result.x0;
         this.y = result.y0;
         this.width = (result.xn - result.x0) + 1;
         this.height = (result.yn - result.y0) + 1;
+        this.$store.commit('ADD_SIGN', {
+          path: this.image.path,
+          sign: {
+            type: 'size',
+            attr: {
+              x: result.x0,
+              y: result.y0,
+              width: (result.xn - result.x0) + 1,
+              height: (result.yn - result.y0) + 1,
+            },
+          },
+        });
       });
       this.$el.removeEventListener('mousemove', this.moveHandle);
       document.removeEventListener('mouseup', this.endHandle);

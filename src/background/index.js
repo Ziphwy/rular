@@ -17,11 +17,11 @@ const processor = {
   getColor(path, { x, y }) {
     return pixStore.getPixesData(path).getPix('x', x, y);
   },
-  getSimilarRange(path, { direct, main, cross, range, tolerence }) {
-    return pixStore.getPixesData(path).getSimilarRange(direct, main, cross, range, tolerence);
+  getSimilarRange(path, { direct, main, cross, range, tolerance }) {
+    return pixStore.getPixesData(path).getSimilarRange(direct, main, cross, range, tolerance);
   },
-  getSimilarRect(path, { x, y, width, height, tolerence }) {
-    return pixStore.getPixesData(path).getSimilarRect(x, y, width, height, tolerence);
+  getSimilarRect(path, { x, y, width, height, tolerance }) {
+    return pixStore.getPixesData(path).getSimilarRect(x, y, width, height, tolerance);
   },
 };
 

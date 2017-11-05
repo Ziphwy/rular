@@ -33,14 +33,14 @@ module.exports = [
     ],
   },
   {
-    label: '文件',
+    label: 'File',
     submenu: [
       {
-        label: '打开文件',
+        label: 'openFile',
         click: openFile,
       },
       {
-        label: '打开文件夹',
+        label: 'openDirectory',
         click: openDirectory,
       },
     ],

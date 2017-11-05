@@ -1,0 +1,4 @@
+.node_modules
+vue-devtools
+dist
+build

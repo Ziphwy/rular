@@ -18,10 +18,12 @@ function getMainWindow() {
     titleBarStyle: 'hidden',
   });
 
-  // install vue dev-tool chrome-plugin
-  BrowserWindow.addDevToolsExtension(path.resolve(__dirname, '../../vue-devtools/3.1.6_0/'));
-  // open chrome devtools
-  mainWindow.webContents.openDevTools();
+  if (process.env.NODE_ENV === 'development') {
+    // install vue dev-tool chrome-plugin
+    BrowserWindow.addDevToolsExtension(path.resolve(__dirname, '../../vue-devtools/3.1.6_0/'));
+    // open chrome devtools
+    mainWindow.webContents.openDevTools();
+  }
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();

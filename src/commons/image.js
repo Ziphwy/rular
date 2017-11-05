@@ -50,12 +50,12 @@ export function transformLength({ num, width, base, dpr, unit, rfs }) {
     viewSize = num * (base / width);
   }
   if (unit === 'rem') {
-    return `${parseFloat((viewSize / rfs).toFixed(6))}rem`;
+    return `${parseFloat((viewSize / rfs).toFixed(1))}rem`;
   }
   if (unit === 'dp') {
-    return `${parseFloat((viewSize / dpr).toFixed(6))}dp`;
+    return `${parseFloat((viewSize / dpr).toFixed(1))}dp`;
   }
-  return `${parseFloat(viewSize.toFixed(2))}px`;
+  return `${parseFloat(viewSize.toFixed(1))}px`;
 }
 
 
@@ -70,6 +70,15 @@ export function transformColor({ color, mode }) {
   if (color[3] === 255) {
     return `rgb(${color.slice(0, 3).join(',')})`;
   }
-  color[3] = parseFloat((color[3] / 255).toFixed(6));
+  color[3] = parseFloat((color[3] / 255).toFixed(1));
   return `rgba(${color.join(',')})`;
+}
+
+
+export function invertColor(color) {
+  return color.map((c, i) => (i === 3 ? c : 255 - c));
+}
+
+export function mix() {
+
 }

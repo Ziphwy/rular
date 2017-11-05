@@ -17,12 +17,13 @@ const state = {
   fileList: [],
   scale: 1,
   optionList: initOption(),
+  signList: {},
   currentTool: 'distance',
 };
 
 const mutations = {
   ADD_FILE(state, file) {
-    state.fileList.push(Object.freeze(file));
+    state.fileList.push(file);
     state.fileIndex[file.path] = state.fileList.length - 1;
   },
   RM_FILE(state, path) {
@@ -42,6 +43,9 @@ const mutations = {
   SET_SCALE(state, value) {
     state.scale = value;
   },
+  ADD_SIGN(state, { path, sign }) {
+    state.fileList[state.fileIndex[path]].signList.push(sign);
+  },
 };
 
 const actions = {
@@ -57,6 +61,7 @@ const actions = {
           imgElement,
           width: imgElement.naturalWidth,
           height: imgElement.naturalHeight,
+          signList: [],
         });
       });
     }

@@ -1,25 +1,27 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const fs = require('fs');
+const packageJson = require('./package.json');
 const path = require('path');
 
-module.exports = {
+function rootDirReslove(uri) {
+  return path.resolve(__dirname, uri);
+}
+
+const config = {
   target: 'electron',
   context: __dirname,
   entry: {
-    app: './src/app/index.js',
-    process: './src/background-process/index.js',
+    app: rootDirReslove('src/app/index.js'),
+    process: rootDirReslove('src/background/index.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'assets/[name].[chunkhash:5].js',
+    // publicPath: '/',
+    path: rootDirReslove('build'),
+    filename: 'js/[name].[chunkhash:5].js',
   },
-  // externals: [
-  //   function deal(context, request, callback) {
-  //     if (/electron/.test(request)) {
-  //       return callback(null, `require('${request}')`);
-  //     }
-  //     return callback();
-  //   },
-  // ],
   module: {
     rules: [
       {
@@ -29,13 +31,19 @@ module.exports = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        exclude: [path.resolve(__dirname, 'node_modules')],
+        include: [
+          rootDirReslove('src/app'),
+          rootDirReslove('src/commons'),
+          rootDirReslove('src/background'),
+        ],
       },
       {
         test: /\.(jpe?g|png|ttf)/,
         loader: 'file-loader',
         options: {
-          name: 'assets/[name].[hash:5].[ext]',
+          useRelativePath: true,
+          outputPath: 'assets',
+          name: '[name].[hash:5].[ext]',
         },
       },
       {
@@ -46,19 +54,43 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/app/index.html'),
       chunks: ['app'],
-      filename: 'app.html',
+      title: 'Rular',
+      filename: 'page/app.html',
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/background-process/index.html'),
       chunks: ['process'],
-      filename: 'process.html',
+      title: 'Rular-Process',
+      filename: 'page/process.html',
     }),
   ],
-  devtool: 'eval',
-  devServer: {
-    port: 8000,
-  },
 };
+
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(new CleanWebpackPlugin(rootDirReslove('dist')));
+  config.plugins.push(new CleanWebpackPlugin(rootDirReslove('build')));
+  config.plugins.push(new CopyWebpackPlugin([
+    { from: './src/main-process', to: 'main-process' },
+    { from: './src/icon', to: 'icon' },
+    { from: './src/index.js', to: 'index.js' },
+  ]));
+  config.plugins.push({
+    apply(compiler) {
+      compiler.plugin('done', () => {
+        const { name, version, description, main, author, license, repository, build } = packageJson;
+        const buildPackage = { name, version, description, main, author, license, repository, build };
+        fs.writeFileSync(rootDirReslove('build/package.json'), JSON.stringify(buildPackage));
+      });
+    },
+  });
+} else {
+  config.plugins.push(new FriendlyErrorsWebpackPlugin());
+  config.devtool = 'eval';
+  config.devServer = {
+    port: 8000,
+    noInfo: true,
+  };
+}
+
+module.exports = config;
 

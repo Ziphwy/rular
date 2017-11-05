@@ -143,15 +143,15 @@ class PixesData {
     return { p0, pn }; // [p0, pn], if no similar to near pix will return [mAxis, mAxis].
   }
 
-  getSimilarRect(x, y, width, height, tolerence = 0) {
+  getSimilarRect(x, y, width, height, tolerance = 0) {
     let x0 = x;
     let xn = x + width;
 
-    while (x0 < xn && this._isSimilarLine('y', x0, y, height, tolerence)) {
+    while (x0 < xn && this._isSimilarLine('y', x0, y, height, tolerance)) {
       x0++;
     }
 
-    while (xn > x0 && this._isSimilarLine('y', xn, y, height, tolerence)) {
+    while (xn > x0 && this._isSimilarLine('y', xn, y, height, tolerance)) {
       xn--;
     }
 
@@ -159,11 +159,11 @@ class PixesData {
     let y0 = y;
     let yn = y + height;
 
-    while (y0 < yn && this._isSimilarLine('x', x0, y0, xLen, tolerence)) {
+    while (y0 < yn && this._isSimilarLine('x', x0, y0, xLen, tolerance)) {
       y0++;
     }
 
-    while (yn > y0 && this._isSimilarLine('x', x0, yn, xLen, tolerence)) {
+    while (yn > y0 && this._isSimilarLine('x', x0, yn, xLen, tolerance)) {
       yn--;
     }
 

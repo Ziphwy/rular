@@ -43,6 +43,9 @@ export default {
   top: 0;
   left: 0;
 }
+.sign:focus {
+    box-shadow: 0 0 5px 1px red;
+}
 .rect {
   border: 1px solid red;
   font-size: 12px;

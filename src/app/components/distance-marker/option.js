@@ -3,8 +3,8 @@ export default {
   createOption() {
     return {
       direct: 'x',
-      range: 2,
-      tolerance: 0,
+      range: 0,
+      tolerance: 10,
     };
   },
   createOptionConfig({ direct, range, tolerance }) {

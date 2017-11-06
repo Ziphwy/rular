@@ -1,5 +1,6 @@
-const { dialog, BrowserWindow } = require('electron');
-const mainWindow = require('./main-window.js');
+const { dialog, BrowserWindow, Menu } = require('electron');
+
+let mainWindow;
 
 function openFile() {
   const filePath = dialog.showOpenDialog(BrowserWindow.getFocusedWindow(), {
@@ -10,14 +11,14 @@ function openFile() {
       'openFile',
     ],
   });
-  mainWindow.webContents.send('open-file', filePath);
+  mainWindow.webContents.send('open-file', { path: filePath });
 }
 
-function openDirectory() {
+// function openDirectory() {
 
-}
+// }
 
-module.exports = [
+const template = [
   {
     label: 'Rular',
     submenu: [
@@ -39,10 +40,10 @@ module.exports = [
         label: 'openFile',
         click: openFile,
       },
-      {
-        label: 'openDirectory',
-        click: openDirectory,
-      },
+      // {
+      //   label: 'openDirectory',
+      //   click: openDirectory,
+      // },
     ],
   },
   {
@@ -60,3 +61,11 @@ module.exports = [
     ],
   },
 ];
+
+module.exports = {
+  init(window) {
+    mainWindow = window;
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  },
+};
+

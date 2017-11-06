@@ -1,7 +1,7 @@
 <template>
   <div class="setting flex flex-center" @mouseover="active && (spread = true)" @mouseleave="active && (spread = false)">
     <div class="icon button" :class="[option.icon, (active ? 'active': '')]" @click="select"></div>
-    <div class="flex flex-center tool-option" :class="spread ? 'show' : 'hide'" :style="spreadStyles" ref="content">
+    <div class="flex flex-center tool-option" :class="spread ? 'show' : 'hide'" :style="spreadStyles" ref="content" v-show="option.attr">
 
       <div class="flex option" 
            v-for="(optVal, optKey) in option.attr" 

@@ -1,6 +1,7 @@
 /** eslint global-require:0 */
 const path = require('path');
 const electron = require('electron');
+const menu = require('./menu.js');
 const processWindow = require('./process-window');
 
 let mainWindow;
@@ -17,6 +18,8 @@ function getMainWindow() {
     show: false,
     titleBarStyle: 'hidden',
   });
+
+  menu.init(mainWindow);
 
   if (process.env.NODE_ENV === 'development') {
     // install vue dev-tool chrome-plugin

@@ -53,8 +53,9 @@ export default {
   background-color: rgba(191, 191, 191, 0.5);
 }
 .thumbnail .canvas {
-    width: 247px;
-    height: 400px;
+  max-width: 247px;
+  max-height: 400px;
+  margin: auto;
 }
 .thumbnail .text {
   text-align: center;

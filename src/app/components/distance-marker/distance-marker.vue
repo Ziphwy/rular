@@ -50,6 +50,9 @@ export default {
   top: 0;
   left: 0;
 }
+.sign:focus {
+    box-shadow: 0 0 5px 1px red;
+}
 .line {
   border-bottom: 1px solid red;
   height: 1px;

@@ -1,6 +1,6 @@
 <template>
   <div class="full-screen" @mousemove.ctrl="moveHandle" @click="clickHandle">
-    <color-marker :attr="attr" style="pointer-events: none;"></color-marker>
+    <color-marker :attr="attr" style="pointer-events: none;" v-show="isShowCursor"></color-marker>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ export default {
       x: 0,
       y: 0,
       color: [],
+      isShowCursor: false,
     };
   },
   computed: {
@@ -27,6 +28,9 @@ export default {
         color: this.color,
       };
     },
+    currentTool() {
+      return this.$store.state.currentTool;
+    },
   },
   components: {
     colorMarker,
@@ -36,6 +40,7 @@ export default {
       return process(this.image.path, 'getColor', { x: $event.offsetX, y: $event.offsetY });
     },
     moveHandle: throttle(function moveHandle($event) {
+      this.isShowCursor = true;
       this.process($event).then(({ result }) => {
         this.x = $event.offsetX;
         this.y = $event.offsetY;
@@ -56,6 +61,13 @@ export default {
           },
         });
       });
+    },
+  },
+  watch: {
+    currentTool(v) {
+      if (v !== 'color') {
+        this.isShowCursor = false;
+      }
     },
   },
 };

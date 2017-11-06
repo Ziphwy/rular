@@ -1,5 +1,5 @@
 /* eslint-env node */
-const { app, ipcMain } = require('electron');
+const { app, ipcMain, globalShortcut } = require('electron');
 const getMainWindow = require('./main-process/main-window.js');
 const getProcessWindow = require('./main-process/process-window.js');
 const nodePath = require('path');
@@ -31,6 +31,10 @@ function init() {
       code, pid, path, method, args, result,
     });
   });
+
+  globalShortcut.register('CommandOrControl+Alt+X', () => {
+    mainWindow.webContents.send('capture');
+  });
 }
 
 
@@ -45,4 +49,8 @@ app.on('activate', (event, hasVisibleWindows) => {
 
     init();
   }
+});
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll();
 });

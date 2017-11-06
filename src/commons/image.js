@@ -28,6 +28,22 @@ export function getImageByPath(path) {
   });
 }
 
+export function getFileByPath(path) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      fs.stat(path, (err1, stat) => {
+        if (err1) {
+          reject(err1);
+        }
+        blobToImage(new Blob([data])).then(imgElement => resolve({ stat, imgElement }));
+      });
+    });
+  });
+}
+
 
 export function imageToCanvas(imgElement, opt = {}) {
   const canvas = document.createElement('canvas');
@@ -62,9 +78,10 @@ export function transformLength({ num, width, base, dpr, unit, rfs }) {
 export function transformColor({ color, mode }) {
   if (mode === 'hex') {
     if (color[3] === 255) {
-      return `#${color.slice(0, 3).map(c => c.toString(16)).join('')}`;
+      return `#${color.slice(0, 3).map(c => c.toString(16).padStart(2, '0')).join('')}`;
     }
-    return `#${color.map(c => c.toString(16)).join('')}`;
+    const hexColor = color.map(c => c.toString(16).padStart(2, '0'));
+    return `#${hexColor[3]}${hexColor.slice(0, 3).join('')}`;
   }
 
   if (color[3] === 255) {
@@ -79,6 +96,6 @@ export function invertColor(color) {
   return color.map((c, i) => (i === 3 ? c : 255 - c));
 }
 
-export function mix() {
-
+export function isLightColor(color) {
+  return ((color[0] - 128) + (color[1] - 128) + (color[2] - 128)) > 0;
 }

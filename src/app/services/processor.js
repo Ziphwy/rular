@@ -1,4 +1,5 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, desktopCapturer, clipboard, screen } from 'electron';
+import store from './store';
 
 const resolveFunc = {};
 
@@ -10,6 +11,31 @@ ipcRenderer.on('main', (sender, resp) => {
     }
     delete resolveFunc[pid];
   }
+});
+
+ipcRenderer.on('open-file', (sender, { path: pathList }) => {
+  store.dispatch('getFileByPath', pathList);
+});
+
+ipcRenderer.on('capture', () => {
+  const point = screen.getCursorScreenPoint();
+  const display = screen.getDisplayNearestPoint(point);
+  desktopCapturer.getSources({
+    types: ['screen'],
+    thumbnailSize: {
+      width: display.size.width * 2,
+      height: display.size.height * 2,
+    },
+  }, (err, sources) => {
+    if (err) {
+      throw Error();
+    }
+    sources.forEach((source) => {
+      if (new RegExp(display.id).test(source.id)) {
+        clipboard.writeImage(source.thumbnail);
+      }
+    });
+  });
 });
 
 export function process(path, method, args) {

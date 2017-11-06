@@ -101,6 +101,9 @@ canvas {
 .set {
   background-image: url("../assets/setting.png");
 }
+.cursor {
+  background-image: url("../assets/cursor.png");
+}
 </style>
  
 
@@ -110,6 +113,11 @@ canvas {
   margin: auto;
   min-height: 100%;
 }
+
+.image-view * {
+  cursor: crosshair;  
+}
+
 .image-view {
   position: relative;
   box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.5);

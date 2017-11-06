@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
-import { blobToImage, transformLength, transformColor } from '../../commons/image';
+import { blobToImage, transformLength, transformColor, getFileByPath } from '../../commons/image';
 import { process } from '../services/processor';
 import baseOption from '../components/base-option';
 import colorOption from '../components/color-marker/option';
@@ -8,7 +8,13 @@ import distanceOption from '../components/distance-marker/option';
 import sizeOption from '../components/size-marker/option';
 import { register, initOption } from '../services/option-manager';
 
-register(colorOption, distanceOption, sizeOption, baseOption);
+const nodePath = require('path');
+
+register(colorOption, distanceOption, sizeOption, {
+  type: 'none',
+  createOption() {},
+  createOptionConfig() { return { type: 'none', icon: 'cursor' }; },
+}, baseOption);
 
 /* eslint no-shadow: 0 */
 const state = {
@@ -46,23 +52,43 @@ const mutations = {
   ADD_SIGN(state, { path, sign }) {
     state.fileList[state.fileIndex[path]].signList.push(sign);
   },
+  DEL_SIGN(state, { path, index }) {
+    state.fileList[state.fileIndex[path]].signList.splice(index, 1);
+  },
 };
 
 const actions = {
-  async addFile({ state, commit }, blob) {
-    const { name, path, size } = blob;
-    if (!state.fileIndex[path]) {
-      await blobToImage(blob).then((imgElement) => {
+  async getFileByPath({ state, commit }, pathList) {
+    pathList.forEach(async (path) => {
+      if (!state.fileIndex[path]) {
+        const { stat, imgElement } = await getFileByPath(path);
         process(path, 'loadImage');
         commit('ADD_FILE', {
-          name,
+          name: nodePath.basename(path),
           path,
-          size,
+          size: stat.size,
           imgElement,
           width: imgElement.naturalWidth,
           height: imgElement.naturalHeight,
           signList: [],
         });
+      }
+      commit('SELECT_FILE', path);
+    });
+  },
+  async addFile({ state, commit }, blob) {
+    const { name, path, size } = blob;
+    if (!state.fileIndex[path]) {
+      const imgElement = await blobToImage(blob);
+      process(path, 'loadImage');
+      commit('ADD_FILE', {
+        name,
+        path,
+        size,
+        imgElement,
+        width: imgElement.naturalWidth,
+        height: imgElement.naturalHeight,
+        signList: [],
       });
     }
     commit('SELECT_FILE', path);

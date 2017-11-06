@@ -5,6 +5,8 @@ import store from './services/store';
 
 document.body.appendChild(document.createElement('App'));
 
+Vue.prototype.$electron = require('electron');
+
 new Vue({
   render(h) {
     return h(app);

@@ -2,7 +2,7 @@ export default {
   type: 'size',
   createOption() {
     return {
-      tolerance: 0,
+      tolerance: 10,
     };
   },
   createOptionConfig({ tolerance }) {

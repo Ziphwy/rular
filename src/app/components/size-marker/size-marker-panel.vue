@@ -1,7 +1,8 @@
 <template>
   <div class="full-screen" @mousedown="startHandle">
     <!-- 光标 -->
-    <size-marker :attr="attr" style="pointer-events: none;"></size-marker>
+    <size-marker :attr="attr" style="pointer-events: none;" v-show="isShowCursor"></size-marker>
+    <div class="save-btn" :style="saveStyles" v-show="isShowSave" @mousedown.stop @click.stop="saveSign">save</div>
   </div>
 </template>
 
@@ -18,6 +19,8 @@ export default {
       y: 0,
       width: 0,
       height: 0,
+      isShowCursor: false,
+      isShowSave: false,
     };
   },
   computed: {
@@ -32,12 +35,23 @@ export default {
     tolerance() {
       return this.$store.state.optionList.size.tolerance;
     },
+    currentTool() {
+      return this.$store.state.currentTool;
+    },
+    saveStyles() {
+      return {
+        top: `${this.y + this.height + 5}px`,
+        left: `${this.x + this.width + 5}px`,
+      };
+    },
   },
   components: {
     sizeMarker,
   },
   methods: {
     startHandle($event) {
+      this.isShowCursor = true;
+      this.isShowSave = false;
       this.x = $event.offsetX;
       this.y = $event.offsetY;
       this.width = 0;
@@ -63,25 +77,44 @@ export default {
         this.y = result.y0;
         this.width = (result.xn - result.x0) + 1;
         this.height = (result.yn - result.y0) + 1;
-        this.$store.commit('ADD_SIGN', {
-          path: this.image.path,
-          sign: {
-            type: 'size',
-            attr: {
-              x: result.x0,
-              y: result.y0,
-              width: (result.xn - result.x0) + 1,
-              height: (result.yn - result.y0) + 1,
-            },
-          },
-        });
+        this.isShowSave = true;
       });
       this.$el.removeEventListener('mousemove', this.moveHandle);
       document.removeEventListener('mouseup', this.endHandle);
+    },
+    saveSign() {
+      this.isShowSave = false;
+      this.$store.commit('ADD_SIGN', {
+        path: this.image.path,
+        sign: {
+          type: 'size',
+          attr: {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+          },
+        },
+      });
+    },
+  },
+  watch: {
+    currentTool(v) {
+      if (v !== 'distance') {
+        this.isShowCursor = false;
+      }
     },
   },
 };
 </script>
 
 <style scoped>
+.save-btn {
+  font-size: 12px;
+    color: #eee;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    padding: 0 2px;
+    position: absolute;
+}
 </style>

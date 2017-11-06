@@ -1,6 +1,12 @@
 <template>
   <div class="full-screen">
-    <component v-for="(sign, index) in image.signList" :is="sign.type" :attr="sign.attr" :key="`sign-${index}`"></component>
+    <component v-for="(sign, index) in image.signList" 
+               :is="sign.type" 
+               :attr="sign.attr" 
+               :key="`sign-${index}`" 
+               :tabindex="index" 
+               @keydown.native.delete="delSign(index)">
+    </component>
   </div>
 </template>
 
@@ -17,8 +23,10 @@ export default {
     distance: distanceMarker,
     size: sizeMarker,
   },
-  updated() {
-    console.log(this.image.signList[0].type);
+  methods: {
+    delSign(index) {
+      this.$store.commit('DEL_SIGN', { path: this.image.path, index });
+    },
   },
 };
 </script>

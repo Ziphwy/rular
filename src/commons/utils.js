@@ -1,9 +1,9 @@
-function throttle(func, maxWait, wait = 100) {
+function throttle(func, maxWait = 50, wait = 50) {
   let timer = null;
   let last = Date.now();
   return function _throttle(...args) {
     clearTimeout(timer);
-    if (Date.now() - last > maxWait) {
+    if (Number.isFinite(maxWait) && (Date.now() - last > maxWait)) {
       last = Date.now();
       func && func.apply(this, args);
     } else {
@@ -13,6 +13,10 @@ function throttle(func, maxWait, wait = 100) {
       }, wait);
     }
   };
+}
+
+function debounce(func, wait = 50) {
+  return throttle(func, Infinity, wait);
 }
 
 function limit(n, min = n, max = n) {
@@ -32,6 +36,7 @@ function divideProp(prop, computed) {
 
 export {
   throttle,
+  debounce,
   limit,
   divideProp,
 };

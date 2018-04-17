@@ -3,11 +3,25 @@
 ## electron + vue 开发的一个测量工具
 
 ### 演示
-![rect](../example/rect.gif)
-![color](../example/color.gif)
-![mutifile](../example/mutifile.gif)
-![unit](../example/unit.gif)
-![ahead](../example/mutifile.gif)
+* 矩形自动像素检测
+
+![rect](./example/rect.gif)
+
+* 取色
+
+![color](./example/color.gif)
+
+* 多文件切换
+
+![mutifile](./example/mutifile.gif)
+
+* 单位切换
+
+![unit](./example/unit.gif)
+
+* 直尺测量
+
+![ahead](./example/ahead.gif)
 
 ### 特点
 1. 自动像素检测

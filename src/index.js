@@ -1,10 +1,13 @@
 /* eslint-env node */
 const { app, ipcMain, globalShortcut } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const getMainWindow = require('./main-process/main-window.js');
 const getProcessWindow = require('./main-process/process-window.js');
 const nodePath = require('path');
 
 function init() {
+  autoUpdater.checkForUpdatesAndNotify();
+
   let mainUrl = `file://${nodePath.resolve(__dirname, './page/app.html')}`;
   let processUrl = `file://${nodePath.resolve(__dirname, './page/process.html')}`;
   if (process.env.NODE_ENV === 'development') {

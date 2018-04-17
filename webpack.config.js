@@ -77,8 +77,8 @@ if (process.env.NODE_ENV === 'production') {
   config.plugins.push({
     apply(compiler) {
       compiler.plugin('done', () => {
-        const { name, version, description, main, author, license, repository, build } = packageJson;
-        const buildPackage = { name, version, description, main, author, license, repository, build };
+        const { name, version, description, main, author, license, repository, build, dependencies } = packageJson;
+        const buildPackage = { name, version, description, main, author, license, repository, build, dependencies };
         fs.writeFileSync(rootDirReslove('build/package.json'), JSON.stringify(buildPackage));
       });
     },
